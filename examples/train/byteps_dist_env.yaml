@@ -1,0 +1,68 @@
+apiVersion: "kubeflow.org/v1"
+kind: "MXJob"
+metadata:
+  name: "byteps-mxnet-job"
+  namespace: "data-spark"
+spec:
+  jobMode: MXTrain
+  cleanPodPolicy: Running
+  successPolicy: AllWorkers
+  mxReplicaSpecs:
+    Scheduler:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: torch
+              image: cargo.dev.caicloud.xyz/release/bytepspytorch:1.4_cv
+              command: ["/bin/echo"]
+              args: ["env |grep DMLC"]
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 100Mi
+                requests:
+                  cpu: 50m
+                  memory: 100Mi
+    Server:
+      replicas: 2
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: torch
+              image: cargo.dev.caicloud.xyz/release/bytepspytorch:1.4_cv
+              command: ["/bin/echo"]
+              args: ["env |grep DMLC"]
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 100Mi
+                requests:
+                  cpu: 50m
+                  memory: 100Mi
+    Worker:
+      replicas: 2
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: torch
+              image: cargo.dev.caicloud.xyz/release/bytepspytorch:1.4_cv
+              command: ["/bin/echo"]
+              args: ["env |grep DMLC"]
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 100Mi
+                requests:
+                  cpu: 50m
+                  memory: 100Mi
+#              volumeMounts:
+#              - mountPath: /dev/shm
+#                name: dshm
+#          volumes:
+#          - name: dshm
+#            emptyDir:
+#              medium: Memory
