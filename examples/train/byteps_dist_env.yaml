@@ -14,10 +14,9 @@ spec:
       template:
         spec:
           containers:
-            - name: torch
+            - name: mxnet
               image: cargo.dev.caicloud.xyz/release/bytepspytorch:1.4_cv
-              command: ["/bin/echo"]
-              args: ["env |grep DMLC"]
+              command: ["/bin/bash","-c","env |grep DMLC;sleep 30s"]
               resources:
                 limits:
                   cpu: 100m
@@ -31,10 +30,9 @@ spec:
       template:
         spec:
           containers:
-            - name: torch
+            - name: mxnet
               image: cargo.dev.caicloud.xyz/release/bytepspytorch:1.4_cv
-              command: ["/bin/echo"]
-              args: ["env |grep DMLC"]
+              command: ["/bin/bash","-c","env |grep DMLC;sleep 30s"]
               resources:
                 limits:
                   cpu: 100m
@@ -48,10 +46,9 @@ spec:
       template:
         spec:
           containers:
-            - name: torch
+            - name: mxnet
               image: cargo.dev.caicloud.xyz/release/bytepspytorch:1.4_cv
-              command: ["/bin/echo"]
-              args: ["env |grep DMLC"]
+              command: ["/bin/bash","-c","env |grep DMLC;sleep 30s"]
               resources:
                 limits:
                   cpu: 100m
@@ -59,10 +56,3 @@ spec:
                 requests:
                   cpu: 50m
                   memory: 100Mi
-#              volumeMounts:
-#              - mountPath: /dev/shm
-#                name: dshm
-#          volumes:
-#          - name: dshm
-#            emptyDir:
-#              medium: Memory

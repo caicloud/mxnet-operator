@@ -2,10 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mxnet-operator
+  namespace: kube-system
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mxnet-operator
   template:
+    metadata:
+      labels:
+        app: mxnet-operator
     spec:
+      serviceAccountName: mxnet-operator
       containers:
       - name: mxnet-operator
-        image: kubeflow/mxnet-operator:v1.0.0-20200625
-
+        image: 10-20-101-1.caicloudprivatetest.com/release/mxnet-operator:v1.0.0-8-ga450046-dirty
+        resources:
+          limits:
+            cpu: 300m
+            memory: 300Mi
+          requests:
+            cpu: 200m
+            memory: 200Mi
