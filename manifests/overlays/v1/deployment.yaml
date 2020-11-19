@@ -13,10 +13,9 @@ spec:
       labels:
         app: mxnet-operator
     spec:
-      serviceAccountName: mxnet-operator
       containers:
       - name: mxnet-operator
-        image: 10-20-101-1.caicloudprivatetest.com/release/mxnet-operator:v1.0.0-8-ga450046-dirty
+        image: lever-dev.cargo.io/release/mxnet-operator:v1.0.0-10-gaafca75
         resources:
           limits:
             cpu: 300m

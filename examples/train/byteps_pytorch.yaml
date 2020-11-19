@@ -1,0 +1,65 @@
+apiVersion: "kubeflow.org/v1"
+kind: "MXJob"
+metadata:
+  name: "byteps-mxnet-job2"
+  namespace: "judds"
+  annotations:
+    caicloud.io/extended-resource-scheduler: "true"
+spec:
+  jobMode: MXTrain
+  cleanPodPolicy: Running
+  successPolicy: AllWorkers
+  mxReplicaSpecs:
+    Scheduler:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          schedulerName: extended-resource-scheduler
+          containers:
+            - name: mxnet
+              image: lever-dev.cargo.io/release/pytorch:latest
+              command: ["/bin/bash","-c","bpslaunch"]
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 100Mi
+                requests:
+                  cpu: 50m
+                  memory: 100Mi
+    Server:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          schedulerName: extended-resource-scheduler
+          containers:
+            - name: mxnet
+              image: lever-dev.cargo.io/release/pytorch:latest
+              command: ["/bin/bash","-c","bpslaunch"]
+              resources:
+                limits:
+                  cpu: 800m
+                  memory: 1000Mi
+                requests:
+                  cpu: 500m
+                  memory: 700Mi
+    Worker:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          schedulerName: extended-resource-scheduler
+          containers:
+            - name: mxnet
+              image: lever-dev.cargo.io/release/pytorch:latest
+              command: ["/bin/bash","-c","sed -i 's/args.batch_size).random_() % 1000/args.batch_size).random_() % args.num_classes/g' /usr/local/byteps/example/pytorch/benchmark_byteps.py;bpslaunch python3 /usr/local/byteps/example/pytorch/benchmark_byteps.py --model resnet18 --num-iters 2 --no-cuda --num-warmup-batches 1 --num-batches-per-iter 2 --num-classes 5 --batch-size 4"]
+              resources:
+                limits:
+                  cpu: 1500m
+                  memory: 3000Mi
+                  extendedresource.caicloud.io/gpu-tesla-t4-15079mib: "1"
+                requests:
+                  cpu: 1000m
+                  memory: 2000Mi
+                  extendedresource.caicloud.io/gpu-tesla-t4-15079mib: "1"

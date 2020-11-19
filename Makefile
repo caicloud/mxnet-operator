@@ -152,7 +152,7 @@ push: container
 update: push
 	imageName=$(IMAGE_PREFIX)mxnet-operator$(IMAGE_SUFFIX);                       \
 	image=$(REGISTRY)/$${imageName}:$(VERSION);                                        \
-	kubectl -n kube-system patch deploy mxnet-operator-controller-v1-0 -p         \
+	kubectl -n kube-system patch deploy mxnet-operator -p         \
 	"{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"c0\",              \
 	\"image\":\"$${image}\"}]}}}}";                                                    \
 

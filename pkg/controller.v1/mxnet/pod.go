@@ -21,7 +21,10 @@ import (
 	"strconv"
 	"strings"
 
+	mxv1beta1 "github.com/kubeflow/mxnet-operator/pkg/apis/mxnet/v1beta1"
+
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 
@@ -127,6 +130,12 @@ func (tc *MXController) SetClusterSpec(job interface{}, podTemplate *corev1.PodT
 			Name:  "DMLC_USE_KUBERNETES",
 			Value: strconv.Itoa(1),
 		})
+		if rtype == strings.ToLower(string(mxv1beta1.MXReplicaTypeWorker)) {
+			c.Env = append(c.Env, v1.EnvVar{
+				Name:  "DMLC_WORKER_ID",
+				Value: index,
+			})
+		}
 	}
 	return nil
 }
